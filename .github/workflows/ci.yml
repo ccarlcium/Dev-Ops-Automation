@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1 libglib2.0-0
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Create output folder
+        run: mkdir -p output
+
+      - name: Run tests
+        run: pytest -v
+
+      - name: Process any CSVs in input/ with error logging
+        run: python process_inputs.py
+
+      - name: Display error summary
+        if: always()
+        run: |
+          if [ -f error_logs/error_log.csv ]; then
+            echo "### ⚠️ Errors Detected During Processing" >> $GITHUB_STEP_SUMMARY
+            python view_errors.py >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ✅ No errors detected during processing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Configure Git
+        if: github.event_name == 'push'
+        run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Commit and push error logs (if any errors occurred)
+        if: github.event_name == 'push' && always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f error_logs/error_log.csv ]; then
+            git add error_logs/
+            git diff --staged --quiet || git commit -m "CI: Add error logs from run"
+            git push origin "HEAD:${{ github.ref }}" || true
+          fi
+
+      - name: Commit and push output folder
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add output/
+          git diff --staged --quiet || git commit -m "CI: Add processed outputs from test run"
+          git push origin "HEAD:${{ github.ref }}"
+
+      - name: Upload error logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: error-logs
+          path: error_logs/
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Upload processing logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: processing-logs
+          path: output/
+          retention-days: 30
+          if-no-files-found: ignore

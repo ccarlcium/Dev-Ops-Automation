@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-03-24T04:08:58.364665Z",
+  "processing": {
+    "total_files": 1,
+    "successfully_processed": 1,
+    "failed": 0,
+    "success_rate": 100.0
+  },
+  "logs": {
+    "pipeline_log": "output/pipeline_log.csv",
+    "error_log": "error_logs/error_log.csv",
+    "error_logs_directory": "error_logs"
+  },
+  "errors": {
+    "total_errors": 6,
+    "errors_by_type": {
+      "validation_error": 6
+    },
+    "files_with_errors": [
+      "/tmp/pytest-of-runner/pytest-0/test_process_csv_invalid_rows0/input.csv",
+      "/tmp/pytest-of-runner/pytest-0/test_full_pipeline0/input.csv",
+      "/tmp/pytest-of-runner/pytest-0/test_process_csv_missing_colum0/input.csv",
+      "/tmp/pytest-of-runner/pytest-0/test_process_invalid0/in_invalid.csv"
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+timestamp,level,event,function_name,duration_ms,file_path,status,details
+2026-03-24T04:08:57.955884Z,INFO,file_processing,,,input/sample_data.csv,started,started_at=2026-03-24T04:08:57.955877Z
+2026-03-24T04:08:57.955966Z,INFO,execution,_run,408,,,
+2026-03-24T04:08:58.364133Z,INFO,file_processing,,,input/sample_data.csv,completed,"processed=34020,errors=0"

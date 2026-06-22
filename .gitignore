@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+*.log
+*.csv
+
+# allow committed sample inputs and outputs
+!input/*.csv
+!output/*.csv
