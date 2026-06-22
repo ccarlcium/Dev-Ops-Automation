@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-24T04:08:58.364665Z",
+  "timestamp": "2026-06-22T11:24:22.643690Z",
   "processing": {
     "total_files": 1,
     "successfully_processed": 1,
@@ -18,9 +18,9 @@
     },
     "files_with_errors": [
       "/tmp/pytest-of-runner/pytest-0/test_process_csv_invalid_rows0/input.csv",
-      "/tmp/pytest-of-runner/pytest-0/test_full_pipeline0/input.csv",
       "/tmp/pytest-of-runner/pytest-0/test_process_csv_missing_colum0/input.csv",
-      "/tmp/pytest-of-runner/pytest-0/test_process_invalid0/in_invalid.csv"
+      "/tmp/pytest-of-runner/pytest-0/test_process_invalid0/in_invalid.csv",
+      "/tmp/pytest-of-runner/pytest-0/test_full_pipeline0/input.csv"
     ]
   }
 }
